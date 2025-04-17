@@ -7,8 +7,8 @@ import streamlit as st
 try:
     firebase_admin.get_app()
 except ValueError:
-    cred_dict = st.secrets["firebase"]
-    # Ensure the private_key is properly formatted (removing any unnecessary escape characters)
+    # Make a copy so we can edit the private_key
+    cred_dict = dict(st.secrets["firebase"])
     cred_dict["private_key"] = cred_dict["private_key"].replace("\\n", "\n")
     cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
