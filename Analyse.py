@@ -187,7 +187,7 @@ def main():
                     if not reddit:
                         st.error("Reddit connection failed.")
                         return
-                    reddit.subreddits.search_by_name(subreddit, exact=True)
+                    reddit.subreddit(subreddit).id
                 except prawcore.exceptions.NotFound:
                     st.error(f"❌ Subreddit '{subreddit}' does not exist.")
                     return
