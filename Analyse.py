@@ -85,7 +85,7 @@ def main():
         )
 
         image_path = "images/sentiments.jpg"
-        st.image(Image.open(image_path), use_column_width=True)
+        st.image(Image.open(image_path), use_container_width=True)
         
         st.title("Specialised Reddit Sentiment Analyzer for Tech Products")
 
