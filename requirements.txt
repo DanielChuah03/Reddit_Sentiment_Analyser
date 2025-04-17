@@ -1,7 +1,6 @@
 streamlit
 pandas
 Pillow
-re
 prawcore
 matplotlib
 torch
