@@ -114,15 +114,19 @@ def logout_user():
     st.session_state['logged_in'] = False
     return True
 
-# Function to authenticate with Reddit using Streamlit secrets
 def authenticate_reddit():
     try:
+        # Just show the key names (not values!) to confirm secrets are present
+        st.write("Reddit secrets loaded:", list(st.secrets["reddit"].keys()))
+
         reddit = praw.Reddit(
-            client_id=st.secrets["reddit"]["CLIENT_ID"],  # Get Reddit client ID from secrets
-            client_secret=st.secrets["reddit"]["CLIENT_SECRET"],  # Get Reddit client secret from secrets
-            user_agent=st.secrets["reddit"]["USER_AGENT"]  # Get Reddit user agent from secrets
+            client_id=st.secrets["reddit"]["CLIENT_ID"],
+            client_secret=st.secrets["reddit"]["CLIENT_SECRET"],
+            user_agent=st.secrets["reddit"]["USER_AGENT"]
         )
+
+        st.success("✅ Reddit authentication successful.")
         return reddit
     except Exception as e:
-        print(f"Error authenticating with Reddit: {e}")
+        st.error(f"❌ Error authenticating with Reddit: {e}")
         return None
