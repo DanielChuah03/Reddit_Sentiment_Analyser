@@ -14,6 +14,8 @@ except ValueError:
 
 db = firestore.client()
 
+print("Firebase initialized")
+
 def register_user(username, email, password):
     if not username.strip():
         return False, "Username cannot be empty."
