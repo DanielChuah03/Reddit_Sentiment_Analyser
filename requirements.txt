@@ -11,3 +11,4 @@ sentence_transformers
 seaborn
 praw
 firebase_admin
+six
