@@ -5,11 +5,12 @@ import streamlit as st
 
 # --- Initialize Firebase Admin SDK using Streamlit secrets ---
 try:
-    firebase_admin.get_app()  # Check if Firebase app is already initialized
+    firebase_admin.get_app()
 except ValueError:
-    # Initialize Firebase app with credentials from Streamlit secrets
     cred_dict = st.secrets["firebase"]
-    cred = credentials.Certificate(cred_dict)  # Use the certificate credentials from secrets
+    # Ensure the private_key is properly formatted (removing any unnecessary escape characters)
+    cred_dict["private_key"] = cred_dict["private_key"].replace("\\n", "\n")
+    cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
