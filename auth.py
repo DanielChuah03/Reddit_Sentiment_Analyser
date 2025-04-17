@@ -5,12 +5,11 @@ import streamlit as st
 
 # --- Initialize Firebase Admin SDK using Streamlit secrets ---
 try:
-    firebase_admin.get_app()
+    firebase_admin.get_app()  # Check if Firebase app is already initialized
 except ValueError:
+    # Initialize Firebase app with credentials from Streamlit secrets
     cred_dict = st.secrets["firebase"]
-    cred_dict = st.secrets["firebase"]
-    print(cred_dict)  # Check the structure of the dictionary
-    cred = credentials.Certificate(cred_dict)
+    cred = credentials.Certificate(cred_dict)  # Use the certificate credentials from secrets
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
@@ -114,13 +113,15 @@ def logout_user():
     st.session_state['logged_in'] = False
     return True
 
+# Function to authenticate with Reddit using Streamlit secrets
 def authenticate_reddit():
     try:
         reddit = praw.Reddit(
-            client_id=st.secrets["reddit"]["CLIENT_ID"],
-            client_secret=st.secrets["reddit"]["CLIENT_SECRET"],
-            user_agent=st.secrets["reddit"]["USER_AGENT"]
+            client_id=st.secrets["reddit"]["CLIENT_ID"],  # Get Reddit client ID from secrets
+            client_secret=st.secrets["reddit"]["CLIENT_SECRET"],  # Get Reddit client secret from secrets
+            user_agent=st.secrets["reddit"]["USER_AGENT"]  # Get Reddit user agent from secrets
         )
         return reddit
-    except Exception:
+    except Exception as e:
+        print(f"Error authenticating with Reddit: {e}")
         return None
