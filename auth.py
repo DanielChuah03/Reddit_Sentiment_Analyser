@@ -8,7 +8,7 @@ import json
 try:
     firebase_admin.get_app()
 except ValueError:
-    cred_dict = json.loads(st.secrets["firebase"])
+    cred_dict = st.secrets["firebase"]
     cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
 
