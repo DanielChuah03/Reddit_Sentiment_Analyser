@@ -8,7 +8,7 @@ demoji
 numpy
 transformers
 sentence_transformers
-seabon
+seaborn
 os
 praw
 firebase_admin
