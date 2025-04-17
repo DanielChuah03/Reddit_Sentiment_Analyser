@@ -116,8 +116,6 @@ def logout_user():
 
 def authenticate_reddit():
     try:
-        # Just show the key names (not values!) to confirm secrets are present
-        st.write("Reddit secrets loaded:", list(st.secrets["reddit"].keys()))
 
         reddit = praw.Reddit(
             client_id=st.secrets["reddit"]["CLIENT_ID"],
@@ -125,7 +123,6 @@ def authenticate_reddit():
             user_agent=st.secrets["reddit"]["USER_AGENT"]
         )
 
-        st.success("✅ Reddit authentication successful.")
         return reddit
     except Exception as e:
         st.error(f"❌ Error authenticating with Reddit: {e}")

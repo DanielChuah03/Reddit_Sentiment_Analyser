@@ -77,8 +77,15 @@ def fetch_comments_with_semantic_filtering(reddit, keyword, embedding_model, sub
     comments_data = []
 
     try:
-        sub = reddit.subreddit(subreddit) if subreddit else reddit.subreddit("all")
+        # Handle subreddit or all subreddits
+        if subreddit:
+            sub = reddit.subreddit(subreddit)  # Correct way to access subreddit
+        else:
+            sub = reddit.subreddit('all')  # Use 'all' if no subreddit is specified
 
+        print(f"Searching in subreddit: {sub.display_name if subreddit else 'All subreddits'}")
+
+        # Search for posts with keyword
         if sorting == 'new':
             search = sub.search(f'"{keyword}"', sort="new", limit=POST_LIMIT)
         elif sorting == 'hot':
@@ -88,7 +95,10 @@ def fetch_comments_with_semantic_filtering(reddit, keyword, embedding_model, sub
         else:  # Default to relevance
             search = sub.search(f'"{keyword}"', sort="relevance", limit=POST_LIMIT)
 
+        posts_found = 0  # Track if any posts are found
+
         for post in search:
+            posts_found += 1
             post.comments.replace_more(limit=0)  # Only fetch top-level comments
             top_comments = post.comments.list()[:COMMENT_LIMIT]  # Limit comments per post
 
@@ -104,6 +114,11 @@ def fetch_comments_with_semantic_filtering(reddit, keyword, embedding_model, sub
                             "Timestamp": pd.to_datetime(comment.created_utc, unit='s'),
                             "Cleaned Comment": cleaned_text
                         })
+
+        if posts_found == 0:
+            print("No posts found for the given keyword in this subreddit.")
+        else:
+            print(f"Found {posts_found} posts related to '{keyword}'.")
 
     except Exception as e:
         print(f"Error fetching comments: {e}")
