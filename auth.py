@@ -2,13 +2,14 @@ import firebase_admin
 from firebase_admin import credentials, auth, firestore
 import praw
 import streamlit as st
+import json
 
 # --- Initialize Firebase Admin SDK using Streamlit secrets ---
 try:
     firebase_admin.get_app()
 except ValueError:
-    firebase_info = st.secrets["firebase"]
-    cred = credentials.Certificate(firebase_info)
+    cred_dict = json.loads(st.secrets["firebase"])
+    cred = credentials.Certificate(cred_dict)
     firebase_admin.initialize_app(cred)
 
 db = firestore.client()
