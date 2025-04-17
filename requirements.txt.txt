@@ -1,0 +1,16 @@
+streamlit
+pandas
+PIL
+re
+prawcore
+matplotlib
+torch
+demoji
+unicodedata
+numpy
+transformers
+sentence_transformers
+seabon
+os
+praw
+firebase_admin
