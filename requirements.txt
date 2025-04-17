@@ -9,6 +9,5 @@ numpy
 transformers
 sentence_transformers
 seaborn
-os
 praw
 firebase_admin
