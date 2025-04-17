@@ -236,7 +236,8 @@ def main():
 
             # Display the resulting DataFrame
             st.subheader("Filtered and analyzed Reddit comments")
-            st.dataframe(st.session_state['df_comments'])
+            with st.expander("🔍 View Filtered Comments Breakdown"):
+                st.dataframe(st.session_state['df_comments'])
 
             #CSS for containers
             st.markdown("""
