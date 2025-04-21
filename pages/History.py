@@ -2,6 +2,7 @@ import streamlit as st
 from auth import get_user_history 
 import pandas as pd
 from report import get_colour, map_sentiment_to_label
+import plotly.graph_objects as go
 
 st.title("Your Analysis History")
 
@@ -46,13 +47,30 @@ if 'logged_in' in st.session_state and st.session_state['logged_in'] and 'user' 
                     aspect_avg['Sentiment Label'] = aspect_avg['Average Score'].apply(map_sentiment_to_label)
                     aspect_avg['Color'] = aspect_avg['Average Score'].apply(get_colour)
 
-                    st.markdown("**Aspect-Based Average Sentiments:**")
-                    for _, row in aspect_avg.iterrows():
-                        st.markdown(
-                            f"<span style='color:{row['Color']}; font-weight:bold;'>{row['Aspect'].capitalize()}</span>: "
-                            f"{row['Sentiment Label']} ({row['Average Score']:.2f})",
-                            unsafe_allow_html=True
-                        )
+                    # Radar chart
+                    categories = aspect_avg['Aspect'].tolist()
+                    values = aspect_avg['Average Score'].tolist()
+
+                    radar_fig = go.Figure()
+                    radar_fig.add_trace(go.Scatterpolar(
+                        r=values,
+                        theta=categories,
+                        fill='toself',
+                        name='Average Sentiment',
+                        line_color='indigo'
+                    ))
+                    radar_fig.update_layout(
+                        polar=dict(
+                            radialaxis=dict(visible=True, range=[-1, 1])
+                        ),
+                        showlegend=False,
+                        title="Aspect-Based Sentiment Radar"
+                    )
+                    st.plotly_chart(radar_fig, use_container_width=True)
+
+                    # Expandable: View aspect sentiment table
+                    with st.expander("View Aspect Score Table"):
+                        st.dataframe(aspect_avg.drop(columns=['Color']))
                 else:
                     st.info("No aspect-related sentiment data found in this analysis.")
 
