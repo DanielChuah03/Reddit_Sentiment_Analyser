@@ -48,29 +48,25 @@ if 'logged_in' in st.session_state and st.session_state['logged_in'] and 'user' 
                     aspect_avg['Color'] = aspect_avg['Average Score'].apply(get_colour)
 
                     # Radar chart
-                    categories = aspect_avg['Aspect'].tolist()
-                    values = aspect_avg['Average Score'].tolist()
-
                     radar_fig = go.Figure()
                     radar_fig.add_trace(go.Scatterpolar(
-                        r=values,
-                        theta=categories,
+                        r=aspect_avg['Average Score'],
+                        theta=aspect_avg['Aspect'],
                         fill='toself',
-                        name='Average Sentiment',
-                        line_color='indigo'
+                        name='Average Aspect Sentiment'
                     ))
                     radar_fig.update_layout(
                         polar=dict(
                             radialaxis=dict(visible=True, range=[-1, 1])
                         ),
-                        showlegend=False,
-                        title="Aspect-Based Sentiment Radar"
+                        showlegend=False
                     )
-                    st.plotly_chart(radar_fig, use_container_width=True)
+                    st.markdown("**Aspect-Based Average Sentiments (Radar Chart):**")
+                    st.plotly_chart(radar_fig, use_container_width=True, key=f"radar_{keyword_str}_{timestamp_str}")
 
-                    # Expandable: View aspect sentiment table
-                    with st.expander("View Aspect Score Table"):
-                        st.dataframe(aspect_avg.drop(columns=['Color']))
+                    # Optional: also show as a table
+                    with st.expander("View Aspect Averages as Table"):
+                        st.dataframe(aspect_avg[['Aspect', 'Average Score', 'Sentiment Label']])
                 else:
                     st.info("No aspect-related sentiment data found in this analysis.")
 
