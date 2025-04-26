@@ -211,7 +211,7 @@ def main():
                         return
 
             # Fetch and analyze with spinner
-            with st.spinner(text=f"Gathering and analysing Reddit comments for '{keyword}' (sorted by {sorting})..."):
+            with st.spinner(text=f"Gathering and analysing Reddit comments for '{keyword}' (sorted by {sorting})... This may take a few minutes."):
                 df_comments = fetch_and_analyze_sentiment(
                     reddit,
                     st.session_state['tokenizer'],
